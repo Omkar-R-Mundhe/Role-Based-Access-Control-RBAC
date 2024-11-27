@@ -1,0 +1,7 @@
+1.I was trying the place the error handling and httperror middleware code above the routes defined .So the routes were not getting executed .
+->Always define the routes before the middlewares and the error handlers 
+
+2.Database connection with mongoose and the async ,await.Here the connection was not succesful beacues the db_uri was undefined.
+
+3.Promises and the async await syntax
+

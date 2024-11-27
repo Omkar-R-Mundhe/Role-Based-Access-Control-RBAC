@@ -5,3 +5,11 @@
 
 3.Promises and the async await syntax
 
+4.When I am trying to link the style page with the header it was not able to find the path beacuse of a simple mistake of middlware .The app.use was written instead app.set which was making all the problem 
+
+5.serving static files from the current file was making the  request to wrong route
+GET /auth/register 304 6.073 ms - -
+GET /auth/style.css 404 1.613 ms - 36
+so changed the relative route.
+
+6.what is the window .history back event ?

@@ -3,12 +3,12 @@ const router = express.Router();
 
 // get the login page 
 router.get("/login", async (req, res) => {
-  res.send("Login");
+  res.render("Login");
 });
 
 // get the register page 
 router.get("/register", async (req, res) => {
-  res.send("register");
+  res.render("register");
 });
 
 // send the login data 

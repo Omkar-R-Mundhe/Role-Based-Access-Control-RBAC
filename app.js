@@ -7,6 +7,7 @@ import connectDB from "./config/db.config..js";
 import index from "./routes/index.route.js";
 import user from "./routes/user.route.js";
 import auth from "./routes/auth.route.js";
+import path from "path";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,8 +22,9 @@ app.use(morgan("dev"));
 // set the view engine as ejs
 app.set("view engine", "ejs");
 
+
 // set the public folder static
-app.set(express.static("public"));
+app.use(express.static("public"));
 
 // routes
 app.use("/", index);
@@ -39,7 +41,8 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
   error.status = error.status || 500;
   res.status(error.status);
-  res.send(error);
+  // res.send(error);
+  res.render('error_404.ejs')
 });
 
 app.listen(port, () => {

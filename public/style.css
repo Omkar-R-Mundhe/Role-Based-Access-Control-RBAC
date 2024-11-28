@@ -21,6 +21,7 @@ nav {
   background: #4070f4;
   padding: 15px 30px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
 }
 
 nav h2 {
@@ -342,8 +343,10 @@ form .signup-link a:hover{
 }
 .container_profile{
   display: flex;
+  
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 .profile {
   min-width: 300px;
@@ -370,12 +373,13 @@ form .signup-link a:hover{
 .error_cont{
   margin-top: 30px;
   display: flex;
-  height: 100vh;
+  height: 80vh;
   justify-content: center;
   align-items: center;
 }
 #error-page{
-  position: absolute;
+  /* position: absolute; */
+  padding: 30px;
   top: 10%;
   left: 15%;
   right: 15%;
@@ -466,4 +470,39 @@ form .signup-link a:hover{
 .content .btns a:hover{
   background: #69a6ce;
   color: #fff;
+}
+
+
+/* flash message */
+
+div.messages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul.messages {
+  list-style: none;
+  min-width: 600px;
+  max-width: 600px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 16px;
+}
+
+ul.messages * {
+  padding: 8px 12px;
+}
+
+.messages .error {
+  background-color: #f87171;
+}
+.messages .success {
+  background-color: #6ee7b7;
+}
+.messages .warning {
+  background-color: #fcd34d;
+}
+.messages .info {
+  background-color: #93c5fd;
 }

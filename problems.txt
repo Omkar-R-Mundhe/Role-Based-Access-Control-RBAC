@@ -13,3 +13,7 @@ GET /auth/style.css 404 1.613 ms - 36
 so changed the relative route.
 
 6.what is the window .history back event ?
+
+7.Data modelling using mongoose an saving data to db 
+
+8.Request is not persisting accross different routes 

@@ -1,28 +1,110 @@
 import express from "express";
+import { User } from "../models/User.model.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 const router = express.Router();
 
-// get the login page 
+// login page
 router.get("/login", async (req, res) => {
   res.render("Login");
 });
 
-// get the register page 
+// register page
 router.get("/register", async (req, res) => {
   res.render("register");
 });
 
-// send the login data 
+// check the login credentials
 router.post("/login", async (req, res) => {
-  res.send("login data send");
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    // check if the user is present
+    if (!user) {
+      req.flash("error", "Invalid credentials");
+      res.render("login", { messages: req.flash() });
+      return;
+    }
+
+    // check the password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      req.flash("error", "Invalid credentials");
+      res.render("login", { messages: req.flash() });
+      return;
+    }
+
+    res.render("profile");
+  } catch (error) {
+    next(error);
+  }
 });
 
-// send the new user data 
-router.post("/register", async (req, res) => {
-  res.send("registerd data send");
+// register the new user
+router.post("/register", async (req, res, next) => {
+  try {
+    const { username, email, password, password2 } = req.body;
+
+    // Check if the user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      req.flash("error", "Email is already registered.");
+      return res.redirect("/auth/register"); // Redirect back to the registration form
+    }
+
+    // Validate the password (example validation)
+    if (!password || password.length < 6) {
+      req.flash("error", "Password must be at least 6 characters long.");
+      return res.render("register", {
+        username: req.body.username,
+        email: req.body.email,
+        messages: req.flash(),
+      });
+    }
+
+    // if password doesnt match
+    if (password != password2) {
+      req.flash("error", "Password does not match");
+      return res.render("register", {
+        username: req.body.username,
+        email: req.body.email,
+        messages: req.flash(),
+      });
+    }
+
+    // Hash the user's password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    // Save the new user to the database
+    const savedUser = await newUser.save();
+    console.log("User saved:", savedUser);
+
+    // Redirect to login page after successful registration
+    req.flash(
+      "success",
+      `${username} you have successfully registered! now you can login`
+    );
+    res.render("login", {
+      messages: req.flash(),
+    });
+  } catch (error) {
+    next(error); // Pass errors to error-handling middleware
+  }
 });
 
-// logout 
-router.get("/logout", async (req, res) => {
+// logout
+router.get("/logout", (req, res) => {
+
+
   res.send("logout");
 });
 

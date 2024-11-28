@@ -1,27 +1,28 @@
 <%- include('./layouts/header.ejs') %>
 
-<h1  class="profile_h1"><span class="goback" onclick="window.history.back()">←</span> Profile</h1>
+<h1 class="profile_h1">
+  <span class="goback" onclick="window.history.back()">←</span> Profile
+</h1>
 
 <div class="container_profile">
-    <div class="profile">
-  <div>
-    <p class="title">ID</p>
-    <p class="subtitle">person id</p>
-  </div>
-  <div>
+  <div class="profile">
+    <div>
+      <p class="title">ID</p>
+      <p class="subtitle"><%= locals.userId?userId:'' %></p>
+    </div>
+    <div>
     <p class="title">Email/username</p>
-    <p class="subtitle">person email</p>
+    <p class="subtitle"><%= locals.email?email:'' %></p>
   </div>
-  <div>
-    <p class="title">Role</p>
-    <p class="subtitle">role</p>
-  </div>
-  <div>
+    <div>
+      <p class="title">Role</p>
+      <p class="subtitle">role</p>
+    </div>
+    <div>
     <p class="title">User object</p>
-    <pre class="subtitle">person</pre>
+    <pre class="subtitle"><%= locals.user?JSON.stringify(user):" " %></pre>
+  </div>
   </div>
 </div>
-</div>
-
 
 <%- include('./layouts/footer.ejs') %>

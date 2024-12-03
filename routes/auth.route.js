@@ -2,6 +2,7 @@ import express from "express";
 import { User } from "../models/User.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import authMiddleware from "../utils/authMiddleware.js";
 
 const router = express.Router();
 
@@ -36,7 +37,15 @@ router.post("/login", async (req, res) => {
       return;
     }
 
-    res.render("profile");
+    // create the jwt sign 
+    const token = jwt.sign({ userId: user._id,user:user.username}, process.env.JWT_SECRET, {
+      expiresIn: "1m"
+    });
+    
+    res.cookie("token", token, { httpOnly: true });
+    console.log("logged in successfully");
+    console.log(token)
+    res.render("profile",{token});
   } catch (error) {
     next(error);
   }
@@ -103,8 +112,7 @@ router.post("/register", async (req, res, next) => {
 
 // logout
 router.get("/logout", (req, res) => {
-
-
+  res.clearCookie("token");
   res.send("logout");
 });
 

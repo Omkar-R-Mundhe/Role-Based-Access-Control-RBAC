@@ -13,6 +13,7 @@ import session from "express-session";
 import connectflash from "connect-flash";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
+import authMiddleware from "./utils/authMiddleware.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -45,7 +46,8 @@ app.use((req, res, next) => {
 
 
 // bodyparser
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // logs the http requests and resposne
 app.use(morgan("dev"));
@@ -55,6 +57,20 @@ app.set("view engine", "ejs");
 
 // set the public folder static
 app.use(express.static("public"));
+
+// Middleware to decode JWT and set req.user
+app.use(authMiddleware);
+
+
+// Middleware to make user available in views
+app.use((req, res, next) => {
+  if (req.user) {
+    res.locals.user = req.user; // Make the user object available globally in templates
+  } else {
+    res.locals.user = null; // Ensure user is null when not logged in
+  }
+  next();
+});
 
 // routes
 app.use("/", index);
